@@ -8,7 +8,6 @@ set(pluginname gipBulletPhysics)
 set(PLUGIN_DIR ${PLUGINS_DIR}/${pluginname})
 set(PLUGIN_LIBS_DIR ${PLUGIN_DIR}/libs)
 
-
 ##### PLUGIN SOURCES #####
 list(APPEND PLUGIN_SRCS
 			${PLUGIN_DIR}/src/gipBulletPhysics.cpp
@@ -83,6 +82,8 @@ if(WIN32)
 			${PLUGIN_LIBS_DIR}/include/GL
 			${PLUGIN_LIBS_DIR}/include/openvr
 	)
+	
+	
 endif(WIN32)
 
 
@@ -99,6 +100,16 @@ if(WIN32)
 	)
 elseif(LINUX)
 	#Linux libs here
+	set(BULLET_ROOT ${ROOT_DIR}/usr/lib/x86_64-linux-gnu/cmake) 
+	find_package(Bullet REQUIRED)
+	list(APPEND PLUGIN_LINKLIBS ${BULLET_COLLISION_LIBRARY})
+	list(APPEND PLUGIN_LINKLIBS ${BULLET_DYNAMICS_LIBRARY})
+	list(APPEND PLUGIN_LINKLIBS ${BULLET_MATH_LIBRARY})
+	list(APPEND PLUGIN_INCLUDES ${BULLET_INCLUDE_DIRS})
+	message(STATUS "Bullet found: ${BULLET_FOUND}")
+    message(STATUS "Bullet include dirs: ${BULLET_INCLUDE_DIRS}")
+    message(STATUS "Bullet libraries: ${BULLET_LIBRARIES}")
+	
 elseif(APPLE)
 	#Macos libs here
 	find_package(Bullet REQUIRED)
